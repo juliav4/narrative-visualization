@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>Narative Visualization</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <style>
+    .chart rect { fill: steelblue }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+    .axis text {
+        font-family: sans-serif;
+        font-size: 11px;
+        transform: rotate(0deg);
+    }
+
+
+    </style>
+  
+</head>
+<body>
+
+  <header>
+    <h1>My Life During COVID</h1>
+    <h2>How I am surviving the pandemic</h3>
+  </header>
+
+        <nav>
+          <ul>
+            <li><a href="scene-1.html">1</a></li>   
+            <li class="active"><a href="scene-2.html">2</a></li>
+            <li><a href="scene-3.html">3</a></li>
+            <li><a href="scene-4.html">4</a></li>
+          </ul>
+        </nav>
+
+        <section>
+
+          <div class="slide-wrapper">
+            <div class="text-content">
+                <h3>What gives me the most stress?</h3>
+                <p>Things that stress me the most on the scale from 1 to 10.</p>
+            
+            </div>
+            <div class="graph-content">
+
+              <svg class="chart"></svg>
+              
+
+              <script>
+              var margin = 50;
+              var width = 650;
+              var height = 300;
+              var data = [8,6,4,3,6,1];
+             
+              var x = d3.scale.ordinal()
+                .domain([0,1,2,3,4,5])
+                  .rangeBands([0,width]);
+              
+              var xh = d3.scale.ordinal()
+                .domain(["Isolation","Lack of focus","Homeschooling","Closed businesses","Uncertainty","Wearing Mask"])
+                  .rangeBands([0,width]);
+              
+              
+              var y = d3.scale.linear()
+                .domain([0,10])
+                  .range([height,0]);
+              var chart = d3.select(".chart");
+              chart.attr("width",width + 2*margin)
+                  .attr("height",height + 2*margin)
+                  .append("g")
+                      .attr("transform","translate(" + (1.5*margin) + "," + margin + ")")
+                  .selectAll("rect")
+                .data(data)
+                  .enter().append("rect")
+                  .attr("width",59)
+                  .attr("height",function(d) { return height - y(d); })
+                  .attr("x",function(d,i) { return x(i); })
+                  .attr("y",function(d) { return y(d); })
+                  
+              var xAxis = d3.svg.axis()
+                  .scale(xh)
+                  .orient("bottom")
+                  .ticks(6);
+              var yAxis = d3.svg.axis()
+                  .scale(y)
+                  .orient("left")
+                  .ticks(11);
+              chart.append("g")
+                  .attr("transform", "translate(" + margin + "," + (height+margin) + ")")
+                  .attr("class","axis")
+                  .call(xAxis);
+                  
+              chart.append("g")
+                  .attr("transform", "translate(" + margin + "," + margin + ")")
+                  .attr("class","axis")
+                  .call(yAxis);
+              </script>
+            </div>
+            </div>
+        </section>
+
+</body>
+</html>
